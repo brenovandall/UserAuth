@@ -2,19 +2,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserAuth.Data;
 using UserAuth.Models;
+using UserAuth.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<ApplicationContext>();
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+var connection = builder.Configuration.
+    GetConnectionString("AppConnection");
 
 builder.Services.AddDbContext<ApplicationContext>(opts => opts.UseMySql(
     builder.Configuration.GetConnectionString("AppConnection"),
-    ServerVersion.AutoDetect(builder.Configuration.
-    GetConnectionString("AppConnection"))));
+    ServerVersion.AutoDetect(connection)));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<signService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
