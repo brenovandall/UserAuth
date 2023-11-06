@@ -19,7 +19,7 @@ builder.Services.AddDbContext<ApplicationContext>(opts => opts.UseMySql(
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // using auto mapper
 
-builder.Services.AddScoped<signService>(); // scoped dependency injection
+builder.Services.AddScoped<UserService>(); // scoped dependency injection
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()

@@ -12,18 +12,25 @@ namespace UserAuth.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private signService _signService;
+    private UserService _userService;
 
-    public UserController(signService signService)
+    public UserController(UserService userService)
     {
-        _signService = signService;
+        _userService = userService;
     }
 
     // tasks represent asynchronous operations, enabling concurrent execution without blocking the main thread
-    [HttpPost]
+    [HttpPost("sign")] // -- > http://url/user/sign
     public async Task<IActionResult> UserCreating(UserDto user)
     {
-        await _signService.Sign(user); // wait for service request 
+        await _userService.Sign(user); // wait for service request 
         return Ok("User successfully signed"); // can return ok because its on the controller, so if system gets off the service, it can return ok to the client
+    }
+
+    [HttpPost("login")] // -- > http://url/user/login 
+    public async Task<IActionResult> LoginUser(UserLoginDto login)
+    {
+        await _userService.Login(login); // wait for service request 
+        return Ok("User authorized!"); // can return ok because its on the controller, so if system gets off the service, it can return ok to the client
     }
 }
