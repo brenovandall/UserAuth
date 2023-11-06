@@ -22,7 +22,7 @@ namespace UserAuth.Data.Dtos
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
-        [Compare("Password")]
+        [Compare("Password")] // compares with the field in parentheses
         public string PasswordConfirmation { get; set; }
     }
 }

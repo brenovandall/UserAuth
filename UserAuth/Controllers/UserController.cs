@@ -19,10 +19,11 @@ public class UserController : ControllerBase
         _signService = signService;
     }
 
+    // tasks represent asynchronous operations, enabling concurrent execution without blocking the main thread
     [HttpPost]
     public async Task<IActionResult> UserCreating(UserDto user)
     {
-        _signService.Sign(user);
-        return Ok("User successfully signed");
+        await _signService.Sign(user); // wait for service request 
+        return Ok("User successfully signed"); // can return ok because its on the controller, so if system gets off the service, it can return ok to the client
     }
 }

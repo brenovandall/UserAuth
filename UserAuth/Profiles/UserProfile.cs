@@ -8,7 +8,7 @@ namespace UserAuth.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserDto, User>();
+            CreateMap<UserDto, User>(); // using auto mapper by user class data transfer to user normal class 
         }
     }
 }

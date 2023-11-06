@@ -8,20 +8,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// database connetion -- > AppConnection == the own connection string 
 var connection = builder.Configuration.
     GetConnectionString("AppConnection");
 
+// mysql connection -- >
 builder.Services.AddDbContext<ApplicationContext>(opts => opts.UseMySql(
     builder.Configuration.GetConnectionString("AppConnection"),
     ServerVersion.AutoDetect(connection)));
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // using auto mapper
 
-builder.Services.AddScoped<signService>();
+builder.Services.AddScoped<signService>(); // scoped dependency injection
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders(); // token provider with identity on -- > Microsoft.AspNetCore.Identity v6
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
