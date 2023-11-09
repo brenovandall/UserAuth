@@ -11,12 +11,14 @@ namespace UserAuth.Services
         private IMapper _mapper;
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private TokenService _tokenService;
 
-        public UserService(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        public UserService(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         // tasks represent asynchronous operations, enabling concurrent execution without blocking the main thread
@@ -33,13 +35,19 @@ namespace UserAuth.Services
 
         }
 
-        public async Task Login(UserLoginDto login)
+        public async Task<string> Login(UserLoginDto login)
         {
             var response = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false); // create auth by password authorization, the paramethers are (username field, password field, isPersistent = true or false, lockoutOnFailure = true or false) lockoutOnFailure = true or false)
                                                                                                                    // isPersistent == cookie should persist after the browser is closed
                                                                                                                    // lockoutOnFailure == user account should be locked if the sign-in fails
 
             if (!response.Succeeded) throw new ApplicationException("User not allowed!");
+
+            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.UserName == login.UserName.ToUpper());
+
+            var token = _tokenService.GenerateToken(user);
+
+            return token;
         }
     }
 }

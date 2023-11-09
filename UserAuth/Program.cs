@@ -21,6 +21,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // usin
 
 builder.Services.AddScoped<UserService>(); // scoped dependency injection
 
+builder.Services.AddScoped<TokenService>();
+
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders(); // token provider with identity on -- > Microsoft.AspNetCore.Identity v6

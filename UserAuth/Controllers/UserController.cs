@@ -30,7 +30,7 @@ public class UserController : ControllerBase
     [HttpPost("login")] // -- > http://url/user/login 
     public async Task<IActionResult> LoginUser(UserLoginDto login)
     {
-        await _userService.Login(login); // wait for service request 
-        return Ok("User authorized!"); // can return ok because its on the controller, so if system gets off the service, it can return ok to the client
+        var token = await _userService.Login(login); // wait for service request 
+        return Ok(token); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
     }
 }
