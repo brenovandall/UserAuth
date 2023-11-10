@@ -19,9 +19,7 @@ builder.Services.AddDbContext<ApplicationContext>(opts => opts.UseMySql(
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // using auto mapper
 
-builder.Services.AddScoped<UserService>(); // scoped dependency injection
 
-builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
@@ -31,6 +29,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<UserService>(); // scoped dependency injection
+
+builder.Services.AddScoped<TokenService>();
 
 var app = builder.Build();
 

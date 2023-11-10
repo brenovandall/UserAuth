@@ -41,9 +41,12 @@ namespace UserAuth.Services
                                                                                                                    // isPersistent == cookie should persist after the browser is closed
                                                                                                                    // lockoutOnFailure == user account should be locked if the sign-in fails
 
-            if (!response.Succeeded) throw new ApplicationException("User not allowed!");
+            if (!response.Succeeded)
+            {
+                throw new ApplicationException("User not allowed!");
+            }
 
-            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.UserName == login.UserName.ToUpper());
+            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == login.UserName.ToUpper());
 
             var token = _tokenService.GenerateToken(user);
 
