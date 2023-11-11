@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using UserAuth.Authorization;
 using UserAuth.Data;
 using UserAuth.Models;
 using UserAuth.Services;
@@ -30,6 +31,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("minage", policy => policy.AddRequirements(new MinAge(18)));
+});
 
 builder.Services.AddScoped<UserService>(); // scoped dependency injection
 
