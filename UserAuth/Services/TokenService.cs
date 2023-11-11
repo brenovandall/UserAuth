@@ -7,15 +7,13 @@ using UserAuth.Models;
 
 namespace UserAuth.Services;
 
-public class TokenService
+public sealed class TokenService
 {
     public string GenerateToken(User user)
     {
         Claim[] claims = new Claim[]
         {
-            new Claim("id", user.Id),
-            new Claim("username", user.UserName),
-            new Claim("loginTimestamp", DateTime.UtcNow.ToString())
+            new Claim("email", user.Email)
         };
 
         var keyS = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("DUHW92831DINDW0U28BD92DJS9J1"));
@@ -23,7 +21,7 @@ public class TokenService
         var signingCredentials = new SigningCredentials(keyS, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddHours(1),
                 claims: claims,
                 signingCredentials: signingCredentials
             );

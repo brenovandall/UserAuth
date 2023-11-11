@@ -17,13 +17,14 @@ builder.Services.AddDbContext<ApplicationContext>(opts => opts.UseMySql(
     builder.Configuration.GetConnectionString("AppConnection"),
     ServerVersion.AutoDetect(connection)));
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // using auto mapper
-
-
-
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services
+    .AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders(); // token provider with identity on -- > Microsoft.AspNetCore.Identity v6
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // using auto mapper
+
+ 
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,8 +45,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

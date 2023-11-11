@@ -46,9 +46,9 @@ namespace UserAuth.Services
                 throw new ApplicationException("User not allowed!");
             }
 
-            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == login.UserName.ToUpper());
+            var user = _signInManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == login.UserName.ToUpper());
 
-            var token = _tokenService.GenerateToken(user);
+            string token = _tokenService.GenerateToken(user);
 
             return token;
         }

@@ -20,17 +20,17 @@ public class UserController : ControllerBase
     }
 
     // tasks represent asynchronous operations, enabling concurrent execution without blocking the main thread
-    [HttpPost("sign")] // -- > http://url/user/sign
+    [HttpPost("sign")] 
     public async Task<IActionResult> UserCreating(UserDto user)
     {
         await _userService.Sign(user); // wait for service request 
         return Ok("User successfully signed"); // can return ok because its on the controller, so if system gets off the service, it can return ok to the client
     }
 
-    [HttpPost("login")] // -- > http://url/user/login 
-    public async Task<IActionResult> LoginUser(UserLoginDto login)
+    [HttpPost("login")] 
+    public async Task<IActionResult> LoginUser(UserLoginDto logindto)
     {
-        var token = await _userService.Login(login); // wait for service request 
-        return Ok(token); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
+        var token = await _userService.Login(logindto); // wait for service request 
+        return Ok(token.ToString()); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
     }
 }
