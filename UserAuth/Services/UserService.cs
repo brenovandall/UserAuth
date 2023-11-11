@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using UserAuth.Data.Dtos;
 using UserAuth.Models;
 
@@ -13,7 +14,8 @@ namespace UserAuth.Services
         private SignInManager<User> _signInManager;
         private TokenService _tokenService;
 
-        public UserService(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
+        public UserService(IMapper mapper, UserManager<User> userManager,
+            SignInManager<User> signInManager, TokenService tokenService)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -35,22 +37,20 @@ namespace UserAuth.Services
 
         }
 
-        public async Task<string> Login(UserLoginDto login)
+        public async Task<string> Login(UserLoginDto logindto)
         {
-            var response = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false); // create auth by password authorization, the paramethers are (username field, password field, isPersistent = true or false, lockoutOnFailure = true or false) lockoutOnFailure = true or false)
-                                                                                                                   // isPersistent == cookie should persist after the browser is closed
-                                                                                                                   // lockoutOnFailure == user account should be locked if the sign-in fails
+            var response = await _signInManager.PasswordSignInAsync(logindto.Username, logindto.Password, false, false);
 
             if (!response.Succeeded)
             {
-                throw new ApplicationException("User not allowed!");
+                throw new ApplicationException("user not allowed!");
             }
 
-            var user = _signInManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == login.UserName.ToUpper());
+            var userWithToken = _signInManager.UserManager.Users.First(x => x.NormalizedUserName == logindto.Username);
 
-            string token = _tokenService.GenerateToken(user);
+            var token = _tokenService.GenerateToken(userWithToken);
 
             return token;
-        }
+        } 
     }
 }

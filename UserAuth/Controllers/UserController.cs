@@ -28,9 +28,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")] 
-    public async Task<IActionResult> LoginUser(UserLoginDto logindto)
+    public async Task<IActionResult> LoginAsync(UserLoginDto logindto)
     {
-        var token = await _userService.Login(logindto); // wait for service request 
-        return Ok(token.ToString()); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
+        var webToken = await _userService.Login(logindto); // wait for service request 
+        return Ok(webToken); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
     }
 }

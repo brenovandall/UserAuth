@@ -14,8 +14,6 @@ namespace UserAuth.Models
         [Required]
         public string Gender { get; set; }
         [Required]
-        public string Email { get; set; }
-        [Required]
         public string CPF { get; set; }
         public User() : base() // fields that are at "IdentityUser", i dont need to instance here, in this case -- > (username, password and password confirmation)
         {
