@@ -30,7 +30,18 @@ public class UserController : ControllerBase
     [HttpPost("login")] 
     public async Task<IActionResult> LoginAsync(UserLoginDto logindto)
     {
-        var webToken = await _userService.Login(logindto); // wait for service request 
-        return Ok(webToken); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
+        //var webToken = await _userService.Login(logindto); // wait for service request 
+        //return Ok(webToken); // can return ok because its on the controller, so if system gets off the service, it can return ok and token message
+
+        try
+        {
+            var webToken = await _userService.Login(logindto);
+            return Ok(new { Status = "Success", Token = webToken });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Status = "Error", Message = $"Login failed: {ex.Message}" });
+        }
+
     }
 }

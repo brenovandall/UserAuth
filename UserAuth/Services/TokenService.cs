@@ -13,10 +13,13 @@ public class TokenService
     {
         Claim[] claims = new Claim[]
         {
+            new Claim("id", user.Id),
             new Claim("username", user.Name)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("7DJQ90RGCB0147SBSK"));
+        string secretKey = KeyGenerator.GenerateSecretKey();
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
         var signingcredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

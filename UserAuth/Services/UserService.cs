@@ -46,7 +46,13 @@ namespace UserAuth.Services
                 throw new ApplicationException("user not allowed!");
             }
 
-            var userWithToken = _signInManager.UserManager.Users.First(x => x.NormalizedUserName == logindto.Username);
+            var userWithToken = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == logindto.Username);
+
+            if (userWithToken == null)
+            {
+                // Trate a situação quando o usuário não é encontrado
+                throw new ApplicationException("Usuário não encontrado!");
+            }
 
             var token = _tokenService.GenerateToken(userWithToken);
 
