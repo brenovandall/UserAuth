@@ -14,7 +14,8 @@ public class TokenService
         Claim[] claims = new Claim[]
         {
             new Claim("id", user.Id),
-            new Claim("username", user.Name)
+            new Claim("username", user.Name),
+            new Claim("userborn",  user.BornDate.ToString(), ClaimTypes.DateOfBirth)
         };
 
         string secretKey = KeyGenerator.GenerateSecretKey();
