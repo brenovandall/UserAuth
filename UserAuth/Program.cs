@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using UserAuth.Authorization;
 using UserAuth.Data;
 using UserAuth.Models;
@@ -36,6 +39,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization(opts =>
 {
     opts.AddPolicy("minage", policy => policy.AddRequirements(new MinAge(18)));
+});
+
+builder.Services.AddAuthentication(opts =>
+{
+    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(opts =>
+{
+    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("GHFUJA84629DHAKCGASIK4720")),
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ClockSkew = TimeSpan.Zero
+    };
 });
 
 builder.Services.AddScoped<UserService>(); // scoped dependency injection

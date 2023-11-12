@@ -15,12 +15,12 @@ public class TokenService
         {
             new Claim("id", user.Id),
             new Claim("username", user.Name),
-            new Claim("userborn",  user.BornDate.ToString(), ClaimTypes.DateOfBirth)
+            new Claim(ClaimTypes.DateOfBirth,  user.BornDate.ToString())
         };
 
-        string secretKey = KeyGenerator.GenerateSecretKey();
+        //string secretKey = KeyGenerator.GenerateSecretKey();
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("GHFUJA84629DHAKCGASIK4720"));
 
         var signingcredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
