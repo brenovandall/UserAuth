@@ -14,8 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // database connetion -- > AppConnection == the own connection string 
-var connection = builder.Configuration.
-    GetConnectionString("AppConnection");
+var connection = builder.Configuration
+    ["SConnectionStrings:AppConnection"];
 
 // mysql connection -- >
 builder.Services.AddDbContext<ApplicationContext>(opts => opts.UseMySql(
@@ -49,7 +49,7 @@ builder.Services.AddAuthentication(opts =>
     opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("GHFUJA84629DHAKCGASIK4720")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
         ValidateAudience = false,
         ValidateIssuer = false,
         ClockSkew = TimeSpan.Zero
