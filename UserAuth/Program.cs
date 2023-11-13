@@ -29,18 +29,20 @@ builder.Services
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // using auto mapper
 
-builder.Services.AddSingleton<IAuthorizationHandler, AgeAuthorization>();
+builder.Services.AddSingleton<IAuthorizationHandler, AgeAuthorization>(); // authorization and class authorization instace 
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// policy instace, requirement is implemented on creation -- >
 builder.Services.AddAuthorization(opts =>
 {
     opts.AddPolicy("minage", policy => policy.AddRequirements(new MinAge(18)));
 });
 
+// validate all information -- >
 builder.Services.AddAuthentication(opts =>
 {
     opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,9 +58,9 @@ builder.Services.AddAuthentication(opts =>
     };
 });
 
-builder.Services.AddScoped<UserService>(); // scoped dependency injection
+builder.Services.AddScoped<UserService>(); // scoped dependency injection for user service
 
-builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<TokenService>();// scoped dependency injection for token service
 
 var app = builder.Build();
 
@@ -70,7 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+app.UseAuthentication(); // need to be declared right here to accept the previous auth!
 app.UseAuthorization();
 
 

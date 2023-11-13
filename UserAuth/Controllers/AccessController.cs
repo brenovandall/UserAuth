@@ -8,7 +8,7 @@ namespace UserAuth.Controllers;
 public class AccessController : ControllerBase
 {
     [HttpGet]
-    [Authorize(Policy = "minage")]
+    [Authorize(Policy = "minage")] // specify the policy for being authorized -- > class MinAge.cs
     public IActionResult Get()
     {
         return Ok("authorized");

@@ -37,6 +37,7 @@ namespace UserAuth.Services
 
         }
 
+        // tasks represent asynchronous operations, enabling concurrent execution without blocking the main thread
         public async Task<string> Login(UserLoginDto logindto)
         {
             var response = await _signInManager.PasswordSignInAsync(logindto.Username, logindto.Password, false, false);
@@ -46,12 +47,13 @@ namespace UserAuth.Services
                 throw new ApplicationException("user not allowed!");
             }
 
+            // NormalizedUserName == normalized and upper string field on IdentityUser class
             var userWithToken = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == logindto.Username);
 
             if (userWithToken == null)
             {
-                // Trate a situação quando o usuário não é encontrado
-                throw new ApplicationException("Usuário não encontrado!");
+                // exeption when the user is not found
+                throw new ApplicationException("Failed... User not found!");
             }
 
             var token = _tokenService.GenerateToken(userWithToken);
